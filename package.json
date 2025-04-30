@@ -33,7 +33,13 @@
           "icon": "./resources/webview_icon.svg"
         }
       ]
-    }
+    },
+    "commands": [
+      {
+        "command": "myExtension.showGifPopup",
+        "title": "Show GIF Popup"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -45,7 +51,7 @@
   "devDependencies": {
     "@types/glob": "^8.0.0",
     "@types/node": "16.x",
-    "@types/vscode": "^1.93.1",
+    "@types/vscode": "^1.99.1",
     "@types/vscode-webview": "^1.57.0",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
@@ -54,7 +60,8 @@
     "eslint": "^8.26.0",
     "glob": "^8.0.3",
     "prettier": "^2.8.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "vscode": "^1.1.37"
   },
   "dependencies": {
     "@types/react": "^19.1.2",
