@@ -36,8 +36,8 @@
     },
     "commands": [
       {
-        "command": "myExtension.showGifPopup",
-        "title": "Show GIF Popup"
+        "command": "popup-button.showPopup",
+        "title": "ポップアップを表示"
       }
     ]
   },
