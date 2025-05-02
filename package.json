@@ -17,19 +17,18 @@
   ],
   "contributes": {
     "views": {
-      "sample-id": [
+      "mySidebar": [
         {
-          "type": "webview",
-          "id": "sample-id",
-          "name": "sample-name"
+          "id": "myView",
+          "name": "My View"
         }
       ]
     },
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "sample-id",
-          "title": "sample-title",
+          "id": "mySidebar",
+          "title": "MySidebar",
           "icon": "./resources/webview_icon.svg"
         }
       ]
