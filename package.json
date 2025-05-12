@@ -16,23 +16,6 @@
     "*"
   ],
   "contributes": {
-    "views": {
-      "mySidebar": [
-        {
-          "id": "myView",
-          "name": "My View"
-        }
-      ]
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "mySidebar",
-          "title": "MySidebar",
-          "icon": "./resources/webview_icon.svg"
-        }
-      ]
-    },
     "commands": [
       {
         "command": "popup-button.showPopup",
