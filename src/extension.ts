@@ -18,7 +18,6 @@ export function activate(context: ExtensionContext) {
       .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
       .then((selection) => {
         if (selection === "動きを確認する") {
-          vscode.window.showInformationMessage("ボタンを押したで");
         }
       });
   });
