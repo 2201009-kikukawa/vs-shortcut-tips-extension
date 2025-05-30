@@ -21,22 +21,23 @@ export class EventListener {
 function getWebviewTabHtml(webview: Webview, extensionUri: Uri) {
   const webviewUri = getUri(webview, extensionUri, ["out", "webviewTab.js"]);
   const stylesUri = getUri(webview, extensionUri, ["out", "styles.css"]);
+  const gifUri = getUri(webview, extensionUri, ["media", "shortcut-tips.gif"]);
   const nonce = getNonce();
 
   return /*html*/ `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-          <link rel="stylesheet" href="${stylesUri}" />
-          <title>Sample</title>
-        </head>
-        <body>
-          <div id="root"></div>
-          <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
-        </body>
-      </html>
-    `;
+    <!DOCTYPE html>
+    <html lang="ja">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource}; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+        <link rel="stylesheet" href="${stylesUri}" />
+        <title>Sample</title>
+      </head>
+      <body>
+        <div id="root" data-gif="${gifUri}"></div>
+        <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
+      </body>
+    </html>
+  `;
 }
