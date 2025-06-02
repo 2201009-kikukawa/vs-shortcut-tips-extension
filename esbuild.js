@@ -23,14 +23,14 @@ const extensionConfig = {
   external: ["vscode"],
 };
 
-// Config for webview source code (to be run in a web-based context)
+// 新しくタブ用の設定を追加
 /** @type BuildOptions */
-const webviewConfig = {
+const webviewTabConfig = {
   ...baseConfig,
   target: "es2020",
   format: "esm",
-  entryPoints: ["./src/webview/main.tsx"],
-  outfile: "./out/webview.js",
+  entryPoints: ["./src/webview/tab.tsx"],
+  outfile: "./out/webviewTab.js",
   plugins: [
     // Copy webview css files to `out` directory unaltered
     copy({
@@ -41,16 +41,6 @@ const webviewConfig = {
       },
     }),
   ],
-};
-
-// 新しくタブ用の設定を追加
-/** @type BuildOptions */
-const webviewTabConfig = {
-  ...baseConfig,
-  target: "es2020",
-  format: "esm",
-  entryPoints: ["./src/webview/tab.tsx"],
-  outfile: "./out/webviewTab.js",
 };
 
 // This watch config adheres to the conventions of the esbuild-problem-matchers
@@ -85,10 +75,6 @@ const watchConfig = {
         ...watchConfig,
       });
       await build({
-        ...webviewConfig,
-        ...watchConfig,
-      });
-      await build({
         ...webviewTabConfig,
         ...watchConfig,
       });
@@ -96,7 +82,6 @@ const watchConfig = {
     } else {
       // Build extension and webview code
       await build(extensionConfig);
-      await build(webviewConfig);
       await build(webviewTabConfig);
       console.log("build complete");
     }

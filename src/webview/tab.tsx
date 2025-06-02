@@ -4,7 +4,10 @@ import ReactDOM from "react-dom/client";
 const Tab = () => {
   return (
     <>
-      <h3>タブ</h3>
+      <img
+        src="https://storage.googleapis.com/short-cut-tips-bucket/short-cut-sample.gif"
+        alt="GCS画像"
+      />
     </>
   );
 };

@@ -1,42 +1,34 @@
-import { Webview, window, Uri } from "vscode";
+import { Uri } from "vscode";
 import * as vscode from "vscode";
-import { getNonce } from "../utilities/getNonce";
-import { getUri } from "../utilities/getUri";
+import { TabProvider } from "../providers/TabProvider";
+
+let statusBarItem: vscode.StatusBarItem;
+let context: Uri;
 
 export class EventListener {
-  constructor(private extensionUri: Uri) {}
-
-  public setTabView() {
-    const panel = window.createWebviewPanel(
-      "shortcut-tips-WebviewPanel",
-      "shortcut-tips",
-      vscode.ViewColumn.One,
-      { enableScripts: true }
-    );
-
-    panel.webview.html = getWebviewTabHtml(panel.webview, this.extensionUri);
+  constructor(private extensionUri: Uri) {
+    context = extensionUri;
   }
-}
+  public setStatusBerView(context: vscode.ExtensionContext) {
+    const tabProvider = new TabProvider(this.extensionUri, context);
+    vscode.ViewColumn.One, { enableScripts: true };
+    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 10);
+    statusBarItem.text = "ShortCutTips";
+    statusBarItem.tooltip = "クリックするとメッセージを表示します";
+    statusBarItem.command = "popup-button.showPopup";
+    statusBarItem.show();
 
-function getWebviewTabHtml(webview: Webview, extensionUri: Uri) {
-  const webviewUri = getUri(webview, extensionUri, ["out", "webviewTab.js"]);
-  const stylesUri = getUri(webview, extensionUri, ["out", "styles.css"]);
-  const nonce = getNonce();
+    const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
+      vscode.window
+        .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
+        .then((selection) => {
+          if (selection === "動きを確認する") {
+            tabProvider.openTabView();
+          }
+        });
+    });
 
-  return /*html*/ `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-          <link rel="stylesheet" href="${stylesUri}" />
-          <title>Sample</title>
-        </head>
-        <body>
-          <div id="root"></div>
-          <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
-        </body>
-      </html>
-    `;
+    context.subscriptions.push(disposable);
+    context.subscriptions.push(statusBarItem);
+  }
 }
