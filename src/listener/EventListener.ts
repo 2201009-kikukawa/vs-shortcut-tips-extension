@@ -1,34 +1,28 @@
 import { Uri } from "vscode";
 import * as vscode from "vscode";
 import { TabProvider } from "../providers/TabProvider";
-
-let statusBarItem: vscode.StatusBarItem;
-let context: Uri;
+import { StatusBarProvider } from "../providers/StatusBarProvider";
 
 export class EventListener {
-  constructor(private extensionUri: Uri) {
-    context = extensionUri;
-  }
-  public setStatusBerView(context: vscode.ExtensionContext) {
-    const tabProvider = new TabProvider(this.extensionUri, context);
-    vscode.ViewColumn.One, { enableScripts: true };
-    statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 10);
-    statusBarItem.text = "ShortCutTips";
-    statusBarItem.tooltip = "クリックするとメッセージを表示します";
-    statusBarItem.command = "popup-button.showPopup";
-    statusBarItem.show();
+  private statusBarItem: StatusBarProvider;
+  private tabProvider: TabProvider;
 
-    const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
+  constructor(private extensionUri: Uri) {
+    this.statusBarItem = new StatusBarProvider();
+    this.tabProvider = new TabProvider(extensionUri);
+  }
+  public setStatusBerListener(context: vscode.ExtensionContext) {
+    this.statusBarItem.setupStatusBar(context);
+    vscode.ViewColumn.One, { enableScripts: true };
+
+    this.statusBarItem.registerCommand(context, () => {
       vscode.window
         .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
         .then((selection) => {
           if (selection === "動きを確認する") {
-            tabProvider.openTabView();
+            this.tabProvider.openTabView();
           }
         });
     });
-
-    context.subscriptions.push(disposable);
-    context.subscriptions.push(statusBarItem);
   }
 }
