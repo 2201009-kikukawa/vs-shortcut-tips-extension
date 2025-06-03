@@ -24,7 +24,11 @@ const Tab = () => {
         </div>
         <div>
           {gifSrc ? (
-            <img src={gifSrc} alt="GIF" style={{ width: "550px" }} />
+            <img
+              src="https://storage.googleapis.com/short-cut-tips-bucket/short-cut-sample.gif"
+              alt="GCS画像"
+              style={{ width: "550px" }}
+            />
           ) : (
             <p>GIFが見つかりません</p>
           )}
