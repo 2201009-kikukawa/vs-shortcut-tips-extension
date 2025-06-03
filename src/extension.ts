@@ -1,7 +1,7 @@
-import { ExtensionContext } from "vscode";
-import { EventListener } from "./listener/EventListener";
+import { ExtensionContext, window } from "vscode";
+import { ViewProvider } from "./providers/ViewProvider";
 
 export function activate(context: ExtensionContext) {
-  const eventListener = new EventListener(context.extensionUri);
-  eventListener.setStatusBerListener(context);
+  const provider = new ViewProvider(context, context.extensionUri);
+  provider.setupStatusBar(context, context.extensionUri);
 }

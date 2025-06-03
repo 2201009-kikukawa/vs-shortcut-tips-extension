@@ -2,13 +2,43 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
+import { Listener } from "../listener/EventListener";
 
-export class TabProvider implements WebviewViewProvider {
+export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
+  private statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    100
+  );
   constructor(
-    private readonly extensionUri: Uri,
-    private readonly context?: vscode.ExtensionContext
+    private readonly _context: vscode.ExtensionContext,
+    private readonly extensionUri: Uri
   ) {}
+
+  public setupStatusBar(context: vscode.ExtensionContext, extensionUri: vscode.Uri) {
+    this.statusBarItem.text = "ShortCutTips";
+    this.statusBarItem.tooltip = "クリックするとメッセージを表示します";
+    this.statusBarItem.command = "popup-button.showPopup";
+    this.statusBarItem.show();
+
+    context.subscriptions.push(this.statusBarItem);
+
+    const listener = new Listener(context, extensionUri);
+    listener.setStatusBar(context);
+  }
+
+  public registerCommand(context: vscode.ExtensionContext, callback: () => void) {
+    const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
+      vscode.window
+        .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
+        .then((selection) => {
+          if (selection === "動きを確認する") {
+            callback();
+          }
+        });
+    });
+    context.subscriptions.push(disposable);
+  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
