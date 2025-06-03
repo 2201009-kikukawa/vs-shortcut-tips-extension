@@ -1,8 +1,11 @@
-import { ExtensionContext, window } from "vscode";
+import { ExtensionContext, window, Uri } from "vscode";
 import { ViewProvider } from "./providers/ViewProvider";
 import * as vscode from "vscode";
+import { EventListener } from "./listener/EventListener";
+let contextUri: Uri;
 
 export function activate(context: ExtensionContext) {
+  contextUri = context.extensionUri;
   const provider = new ViewProvider(context.extensionUri);
 
   const sampleViewDisposable = window.registerWebviewViewProvider(ViewProvider.viewType, provider);
@@ -18,7 +21,7 @@ export function activate(context: ExtensionContext) {
       .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
       .then((selection) => {
         if (selection === "動きを確認する") {
-          vscode.window.showInformationMessage("ボタンを押したで");
+          openTabView();
         }
       });
   });
@@ -27,4 +30,9 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(disposable);
 
   context.subscriptions.push(sampleViewDisposable);
+}
+
+function openTabView() {
+  const tab = new EventListener(contextUri);
+  tab.setTabView();
 }

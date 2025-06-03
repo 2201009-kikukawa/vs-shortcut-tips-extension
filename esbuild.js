@@ -43,6 +43,16 @@ const webviewConfig = {
   ],
 };
 
+// 新しくタブ用の設定を追加
+/** @type BuildOptions */
+const webviewTabConfig = {
+  ...baseConfig,
+  target: "es2020",
+  format: "esm",
+  entryPoints: ["./src/webview/tab.tsx"],
+  outfile: "./out/webviewTab.js",
+};
+
 // This watch config adheres to the conventions of the esbuild-problem-matchers
 // extension (https://github.com/connor4312/esbuild-problem-matchers#esbuild-via-js)
 /** @type BuildOptions */
@@ -78,11 +88,16 @@ const watchConfig = {
         ...webviewConfig,
         ...watchConfig,
       });
+      await build({
+        ...webviewTabConfig,
+        ...watchConfig,
+      });
       console.log("[watch] build finished");
     } else {
       // Build extension and webview code
       await build(extensionConfig);
       await build(webviewConfig);
+      await build(webviewTabConfig);
       console.log("build complete");
     }
   } catch (err) {
