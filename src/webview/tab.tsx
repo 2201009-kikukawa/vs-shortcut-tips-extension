@@ -2,9 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 const Tab = () => {
-  const rootEl = document.getElementById("root");
-  const gifSrc = rootEl?.getAttribute("data-gif");
-
   return (
     <>
       <div>
@@ -22,17 +19,11 @@ const Tab = () => {
           <h3>コマンド</h3>
           <p>Option + ↑ or Option + ↓</p>
         </div>
-        <div>
-          {gifSrc ? (
-            <img
-              src="https://storage.googleapis.com/short-cut-tips-bucket/short-cut-sample.gif"
-              alt="GCS画像"
-              style={{ width: "550px" }}
-            />
-          ) : (
-            <p>GIFが見つかりません</p>
-          )}
-        </div>
+        <img
+          src="https://storage.googleapis.com/short-cut-tips-bucket/short-cut-sample.gif"
+          alt="GCS画像"
+          style={{ width: "550px" }}
+        />
       </div>
     </>
   );
@@ -41,4 +32,4 @@ const Tab = () => {
 export default Tab;
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
-root.render(<Tab />);
+root.render(React.createElement(Tab));
