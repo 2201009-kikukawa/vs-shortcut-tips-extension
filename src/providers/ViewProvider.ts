@@ -2,6 +2,7 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
+import { shortcuts } from "../constans/Constans";
 
 export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
@@ -22,14 +23,13 @@ export class ViewProvider implements WebviewViewProvider {
 
     context.subscriptions.push(this.statusBarItem);
 
+    const names = shortcuts.map((item) => item.name);
     const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-      vscode.window
-        .showInformationMessage("テキストやファイルを複製\nctrl + c , ctrl + v", "動きを確認する")
-        .then((selection) => {
-          if (selection === "動きを確認する") {
-            this.openTabView();
-          }
-        });
+      vscode.window.showInformationMessage(names.join(), "動きを確認する").then((selection) => {
+        if (selection === "動きを確認する") {
+          this.openTabView();
+        }
+      });
     });
     context.subscriptions.push(disposable);
   }
