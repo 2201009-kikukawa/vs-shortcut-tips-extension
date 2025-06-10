@@ -2,7 +2,7 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
-import { shortcuts } from "../constans/Constans";
+import { SHORT_CUT } from "../const";
 
 export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
@@ -23,13 +23,16 @@ export class ViewProvider implements WebviewViewProvider {
 
     context.subscriptions.push(this.statusBarItem);
 
-    const names = shortcuts.map((item) => item.name);
+    const randomIndex = Math.floor(Math.random() * SHORT_CUT.length);
+    const randomShortcut = SHORT_CUT[randomIndex];
     const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-      vscode.window.showInformationMessage(names.join(), "動きを確認する").then((selection) => {
-        if (selection === "動きを確認する") {
-          this.openTabView();
-        }
-      });
+      vscode.window
+        .showInformationMessage(randomShortcut.name, "動きを確認する")
+        .then((selection) => {
+          if (selection === "動きを確認する") {
+            this.openTabView();
+          }
+        });
     });
     context.subscriptions.push(disposable);
   }
