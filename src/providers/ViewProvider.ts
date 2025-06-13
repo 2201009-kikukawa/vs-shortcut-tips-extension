@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
 import { SHORT_CUT } from "../const";
+import * as os from "os";
 
 export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
@@ -23,16 +24,24 @@ export class ViewProvider implements WebviewViewProvider {
 
     context.subscriptions.push(this.statusBarItem);
 
+    const platform = os.platform();
     const randomIndex = Math.floor(Math.random() * SHORT_CUT.length);
-    const randomShortcut = SHORT_CUT[randomIndex];
+    const Shortcut = SHORT_CUT[randomIndex];
+
+    let platformInfo;
+    if (platform === "darwin") {
+      platformInfo = Shortcut.darwin;
+    } else {
+      platformInfo = Shortcut.win32;
+    }
+
     const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-      vscode.window
-        .showInformationMessage(randomShortcut.name, "動きを確認する")
-        .then((selection) => {
-          if (selection === "動きを確認する") {
-            this.openTabView();
-          }
-        });
+      const message = `${Shortcut.name}: ${platformInfo.command}`;
+      vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
+        if (selection === "動きを確認する") {
+          this.openTabView(Shortcut, platformInfo);
+        }
+      });
     });
     context.subscriptions.push(disposable);
   }
@@ -48,7 +57,15 @@ export class ViewProvider implements WebviewViewProvider {
     };
   }
 
-  public openTabView() {
+  public openTabView(
+    Shortcut: {
+      name: string;
+      description: string;
+      win32?: { command: string; gif: string };
+      darwin?: { command: string; gif: string };
+    },
+    platformInfo: { command: string; gif: string }
+  ) {
     const webviewView = window.createWebviewPanel(
       "shortcut-tips-WebviewView",
       "shortcut-tips",
@@ -58,13 +75,26 @@ export class ViewProvider implements WebviewViewProvider {
         localResourceRoots: [Uri.joinPath(this.extensionUri, "out")],
       }
     );
-    webviewView.webview.html = this._getWebviewContent(webviewView.webview, this.extensionUri);
+    webviewView.webview.html = this._getWebviewContent(webviewView.webview, this.extensionUri, {
+      name: Shortcut.name,
+      description: Shortcut.description,
+      command: platformInfo.command,
+      gif: platformInfo.gif,
+    });
   }
 
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+  private _getWebviewContent(
+    webview: Webview,
+    extensionUri: Uri,
+    shortcutData: { name: string; description: string; command: string; gif: string }
+  ) {
     const webviewUri = getUri(webview, extensionUri, ["out", "webviewTab.js"]);
     const stylesUri = getUri(webview, extensionUri, ["out", "styles.css"]);
     const nonce = getNonce();
+
+    const dataScript = `
+      window.shortcutData = ${JSON.stringify(shortcutData)};
+    `;
 
     return /*html*/ `
       <!DOCTYPE html>
@@ -78,6 +108,9 @@ export class ViewProvider implements WebviewViewProvider {
         </head>
         <body>
           <div id="root"></div>
+          <script nonce="${nonce}">
+            ${dataScript}
+          </script>
           <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
         </body>
       </html>
