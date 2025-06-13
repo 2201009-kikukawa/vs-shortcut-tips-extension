@@ -18,7 +18,9 @@ const Tab = () => {
           <h3>コマンド</h3>
           <p>{data.command}</p>
         </div>
-        <img src={data.gif} alt={data.gif} style={{ width: "550px" }} />
+        <div>
+          <img src={data.gif} alt={data.gif} style={{ width: "550px" }} />
+        </div>
       </div>
     </>
   );
