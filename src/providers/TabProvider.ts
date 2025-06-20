@@ -2,40 +2,15 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
-import { SHORT_CUT } from "../const";
+import { ShortcutProps } from "../const";
 
 export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
-  private statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    100
-  );
+
   constructor(
     private readonly _context: vscode.ExtensionContext,
     private readonly extensionUri: Uri
   ) {}
-
-  public setupStatusBar(context: vscode.ExtensionContext, extensionUri: vscode.Uri) {
-    this.statusBarItem.text = "ShortCutTips";
-    this.statusBarItem.tooltip = "クリックするとメッセージを表示します";
-    this.statusBarItem.command = "popup-button.showPopup";
-    this.statusBarItem.show();
-
-    context.subscriptions.push(this.statusBarItem);
-
-    const randomIndex = Math.floor(Math.random() * SHORT_CUT.length);
-    const randomShortcut = SHORT_CUT[randomIndex];
-    const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-      vscode.window
-        .showInformationMessage(randomShortcut.name, "動きを確認する")
-        .then((selection) => {
-          if (selection === "動きを確認する") {
-            this.openTabView();
-          }
-        });
-    });
-    context.subscriptions.push(disposable);
-  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -48,7 +23,7 @@ export class ViewProvider implements WebviewViewProvider {
     };
   }
 
-  public openTabView() {
+  public openTabView(shortcut: ShortcutProps) {
     const webviewView = window.createWebviewPanel(
       "shortcut-tips-WebviewView",
       "shortcut-tips",
@@ -58,13 +33,21 @@ export class ViewProvider implements WebviewViewProvider {
         localResourceRoots: [Uri.joinPath(this.extensionUri, "out")],
       }
     );
-    webviewView.webview.html = this._getWebviewContent(webviewView.webview, this.extensionUri);
+    webviewView.webview.html = this._getWebviewContent(
+      webviewView.webview,
+      this.extensionUri,
+      shortcut
+    );
   }
 
-  private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+  private _getWebviewContent(webview: Webview, extensionUri: Uri, shortcutData: ShortcutProps) {
     const webviewUri = getUri(webview, extensionUri, ["out", "webviewTab.js"]);
     const stylesUri = getUri(webview, extensionUri, ["out", "styles.css"]);
     const nonce = getNonce();
+
+    const dataScript = `
+      window.shortcutData = ${JSON.stringify(shortcutData)};
+    `;
 
     return /*html*/ `
       <!DOCTYPE html>
@@ -78,6 +61,9 @@ export class ViewProvider implements WebviewViewProvider {
         </head>
         <body>
           <div id="root"></div>
+          <script nonce="${nonce}">
+            ${dataScript}
+          </script>
           <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
         </body>
       </html>
