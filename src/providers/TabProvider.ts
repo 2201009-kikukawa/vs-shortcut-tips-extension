@@ -2,38 +2,15 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
-import { getRandomShortcut } from "../utilities/getShortcut";
 import { ShortcutProps } from "../const";
 
 export class ViewProvider implements WebviewViewProvider {
   public static readonly viewType = "shortcut-tips";
-  private statusBarItem: vscode.StatusBarItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    100
-  );
+
   constructor(
     private readonly _context: vscode.ExtensionContext,
     private readonly extensionUri: Uri
   ) {}
-
-  public setupStatusBar(context: vscode.ExtensionContext, extensionUri: vscode.Uri) {
-    this.statusBarItem.text = "ShortCutTips";
-    this.statusBarItem.tooltip = "クリックするとメッセージを表示します";
-    this.statusBarItem.command = "popup-button.showPopup";
-    this.statusBarItem.show();
-
-    context.subscriptions.push(this.statusBarItem);
-
-    const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-      const { message, ShortcutProp } = getRandomShortcut();
-      vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
-        if (selection === "動きを確認する") {
-          this.openTabView(ShortcutProp);
-        }
-      });
-    });
-    context.subscriptions.push(disposable);
-  }
 
   public resolveWebviewView(
     webviewView: vscode.WebviewView,
