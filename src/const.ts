@@ -12,6 +12,13 @@ type Shortcut = {
   darwin: ShortcutPlatformInfo;
 };
 
+export type ShortcutProps = {
+  name: string;
+  description: string;
+  command: string;
+  gif: string;
+};
+
 // 配列全体
 export const SHORT_CUT: Shortcut[] = [
   {
