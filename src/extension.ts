@@ -15,7 +15,8 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(statusBarItem);
 
   const disposable = vscode.commands.registerCommand("popup-button.showPopup", () => {
-    const { message, shortcut } = getRandomShortcut();
+    const { shortcut } = getRandomShortcut();
+    const message = `${shortcut.name}:${shortcut.command}`;
     vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
       if (selection === "動きを確認する") {
         provider.openTabView(shortcut);
