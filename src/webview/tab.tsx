@@ -6,7 +6,7 @@ const vscode = acquireVsCodeApi();
 
 const Tab = () => {
   const [data, setData] = useState<ShortcutProps | null>(null);
-
+  const [isFavorite, setIsFavorite] = useState(false);
   useEffect(() => {
     //VS Code 拡張へ「準備完了」を送信
     vscode.postMessage({ type: "ready" });
@@ -25,22 +25,30 @@ const Tab = () => {
 
   return (
     <>
-      <div>
-        <h1>キーボードショートカット詳細</h1>
-        <hr />
-      </div>
       <div className="field">
         <div>
-          <h3>ショートカット名</h3>
-          <p>{data.name}</p>
-          <h3>概要</h3>
+          <h3>{data.name}</h3>
           <p>{data.description}</p>
-          <h3>コマンド</h3>
-          <p>{data.command}</p>
+          <p>
+            {data.command.split("+").map((key, index, array) => (
+              <span key={index}>
+                <kbd className="kbd-key">{key.trim()}</kbd>
+                {index < array.length - 1 && <span> + </span>}
+              </span>
+            ))}
+          </p>
         </div>
         <div>
-          <img src={data.gif} alt="gif preview" style={{ width: "550px" }} />
+          <button className="favorite-button" onClick={() => setIsFavorite((prev) => !prev)}>
+            <span className={`favorite-star ${isFavorite ? "is-favorite" : ""}`}>
+              {isFavorite ? "★" : "☆"}
+            </span>
+            <span className="favorite-text">ショートカットを保存</span>
+          </button>
         </div>
+      </div>
+      <div className="gif-field">
+        <img src={data.gif} alt="gif preview" className="gif-preview" />
       </div>
     </>
   );
