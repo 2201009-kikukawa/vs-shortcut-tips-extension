@@ -1,4 +1,56 @@
+.box {
+  height: 400px;
+}
+
 .field {
   display: flex;
   justify-content: space-between;
+}
+
+.kbd-key {
+  color: white;
+  margin: 0 4px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: gray;
+}
+
+.favorite-button {
+  margin-top: 16px;
+  background-color: gray;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.favorite-star {
+  font-size: 16px;
+  color: white;
+}
+
+.favorite-star.is-favorite {
+  color: gold;
+}
+
+.favorite-text {
+  color: white;
+}
+
+.gif-field {
+  display: flex;
+  justify-content: center;
+}
+
+.gif-preview {
+  max-width: 80%;
+  height: auto;
+  border-color: #5a5757;
+  border-radius: 16px;
 }
