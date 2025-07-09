@@ -1,14 +1,19 @@
+.box {
+  height: 400px;
+}
+
 .field {
   display: flex;
   justify-content: space-between;
 }
 
 .kbd-key {
+  color: white;
   margin: 0 4px;
   padding: 4px 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background: #f5f5f5;
+  background: gray;
 }
 
 .favorite-button {
@@ -44,6 +49,8 @@
 }
 
 .gif-preview {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
+  border-color: #5a5757;
+  border-radius: 16px;
 }
