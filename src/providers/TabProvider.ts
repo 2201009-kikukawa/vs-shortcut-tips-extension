@@ -63,7 +63,7 @@ export class ViewProvider implements WebviewViewProvider {
     </head>
     <body>
       <div id="root"></div>
-      <script nonce="${nonce}" src="${webviewUri}"></script>
+      <script type="module" nonce="${nonce}" src="${webviewUri}"></script>
     </body>
     </html>
   `;
