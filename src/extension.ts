@@ -1,12 +1,13 @@
 import { ExtensionContext } from "vscode";
 import { ViewProvider } from "./providers/TabProvider";
+import { SidebarViewProvider } from "./providers/SidebarProvider";
 import { getRandomShortcut } from "./utilities/getShortcut";
 import * as vscode from "vscode";
 
 let intervalTimer: NodeJS.Timeout | undefined;
 
 export function activate(context: ExtensionContext) {
-  const TabProvider = new ViewProvider(context, context.extensionUri);
+  const TabView = new ViewProvider(context, context.extensionUri);
 
   //ステータスバー
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -22,7 +23,7 @@ export function activate(context: ExtensionContext) {
     const message = `${shortcut.name}:${shortcut.command}`;
     vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
       if (selection === "動きを確認する") {
-        TabProvider.openTabView(shortcut);
+        TabView.openTabView(shortcut);
       }
     });
   });
@@ -37,7 +38,7 @@ export function activate(context: ExtensionContext) {
     const message = `${shortcut.name}:${shortcut.command}`;
     vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
       if (selection === "動きを確認する") {
-        TabProvider.openTabView(shortcut);
+        TabView.openTabView(shortcut);
       }
     });
   }, intervalInMinutes * 60 * 1000);
@@ -51,49 +52,13 @@ export function activate(context: ExtensionContext) {
   });
 
   //サイドバー
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider("sampleView", new SampleViewProvider(context))
-  );
+  const SidebarView = new SidebarViewProvider(context);
+
+  context.subscriptions.push(vscode.window.registerWebviewViewProvider("sampleView", SidebarView));
 }
 
 export function deactivate() {
   if (intervalTimer) {
     clearInterval(intervalTimer);
-  }
-}
-
-class SampleViewProvider implements vscode.WebviewViewProvider {
-  constructor(private context: vscode.ExtensionContext) {}
-
-  resolveWebviewView(webviewView: vscode.WebviewView) {
-    webviewView.webview.options = {
-      enableScripts: true,
-    };
-
-    webviewView.webview.html = this.getHtml();
-
-    // Webview → Extension へのメッセージ受信
-    webviewView.webview.onDidReceiveMessage((message) => {
-      if (message.command === "buttonClick") {
-        vscode.window.showInformationMessage("ボタンが押されました！");
-      }
-    });
-  }
-
-  private getHtml() {
-    return /*html*/ `
-      <!DOCTYPE html>
-      <html lang="ja">
-      <body>
-        <button id="myButton">Click me!</button>
-        <script>
-          const vscode = acquireVsCodeApi();
-          document.getElementById("myButton").addEventListener("click", () => {
-            vscode.postMessage({ command: "buttonClick" });
-          });
-        </script>
-      </body>
-      </html>
-    `;
   }
 }
