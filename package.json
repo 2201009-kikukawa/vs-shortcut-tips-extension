@@ -21,7 +21,25 @@
         "command": "popup-button.showPopup",
         "title": "ポップアップを表示"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sampleSidebar",
+          "title": "Sample",
+          "icon": "media/sample-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "sampleSidebar": [
+        {
+          "type": "webview",
+          "id": "sampleView",
+          "name": "サイドバー"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
