@@ -43,6 +43,24 @@ const webviewTabConfig = {
   ],
 };
 
+const webviewSidebarConfig = {
+  ...baseConfig,
+  target: "es2020",
+  format: "esm",
+  entryPoints: ["./src/webview/sidebar.tsx"],
+  outfile: "./out/Sidebar.js",
+  plugins: [
+    // Copy webview css files to `out` directory unaltered
+    copy({
+      resolveFrom: "cwd",
+      assets: {
+        from: ["./src/webview/*.css"],
+        to: ["./out"],
+      },
+    }),
+  ],
+};
+
 // This watch config adheres to the conventions of the esbuild-problem-matchers
 // extension (https://github.com/connor4312/esbuild-problem-matchers#esbuild-via-js)
 /** @type BuildOptions */
@@ -78,11 +96,16 @@ const watchConfig = {
         ...webviewTabConfig,
         ...watchConfig,
       });
+      await build({
+        ...webviewSidebarConfig,
+        ...watchConfig,
+      });
       console.log("[watch] build finished");
     } else {
       // Build extension and webview code
       await build(extensionConfig);
       await build(webviewTabConfig);
+      await build(webviewSidebarConfig);
       console.log("build complete");
     }
   } catch (err) {

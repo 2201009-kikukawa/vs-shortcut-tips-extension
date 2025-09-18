@@ -54,3 +54,8 @@
   border-color: #5a5757;
   border-radius: 16px;
 }
+
+.card {
+  border: 1px solid #5a5757;
+  border-radius: 10px;
+}

@@ -52,9 +52,9 @@ export function activate(context: ExtensionContext) {
   });
 
   //サイドバー
-  const SidebarView = new SidebarViewProvider(context);
+  const SidebarView = new SidebarViewProvider(context, context.extensionUri);
 
-  context.subscriptions.push(vscode.window.registerWebviewViewProvider("sampleView", SidebarView));
+  context.subscriptions.push(vscode.window.registerWebviewViewProvider("sidebarView", SidebarView));
 }
 
 export function deactivate() {

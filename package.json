@@ -25,18 +25,18 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "sampleSidebar",
+          "id": "Sidebar",
           "title": "Sample",
           "icon": "media/sample-icon.svg"
         }
       ]
     },
     "views": {
-      "sampleSidebar": [
+      "Sidebar": [
         {
           "type": "webview",
-          "id": "sampleView",
-          "name": "サイドバー"
+          "id": "sidebarView",
+          "name": "一覧"
         }
       ]
     }
