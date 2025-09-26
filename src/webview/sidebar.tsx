@@ -26,7 +26,7 @@ const Tab = () => {
         const command = os === "win32" ? shortcut.win32.command : shortcut.darwin.command;
 
         return (
-          <div key={index} className="card">
+          <div key={index} className="card" onClick={() => handleCommandClick(shortcut)}>
             <h3>{shortcut.name}</h3>
             <p>{shortcut.description}</p>
             <p>
@@ -46,3 +46,7 @@ const Tab = () => {
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(<Tab />);
+
+const handleCommandClick = (shortcut: any) => {
+  vscode.postMessage({ command: "openShortcutTab", value: shortcut });
+};
