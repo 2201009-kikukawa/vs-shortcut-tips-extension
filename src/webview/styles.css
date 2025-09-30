@@ -58,4 +58,31 @@
 .card {
   border: 1px solid #5a5757;
   border-radius: 10px;
+  margin-bottom: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search-container {
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #cccccc;
+}
+
+.no-results p {
+  margin: 0;
+  font-style: italic;
 }
