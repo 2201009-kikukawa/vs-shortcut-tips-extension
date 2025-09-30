@@ -20,6 +20,10 @@ const Tab = () => {
     }
   }, []);
 
+  const handleCommandClick = (shortcut: any) => {
+    vscode.postMessage({ command: "openShortcutTab", value: shortcut });
+  };
+
   return (
     <>
       {SHORT_CUT.map((shortcut, index) => {
@@ -46,7 +50,3 @@ const Tab = () => {
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(<Tab />);
-
-const handleCommandClick = (shortcut: any) => {
-  vscode.postMessage({ command: "openShortcutTab", value: shortcut });
-};

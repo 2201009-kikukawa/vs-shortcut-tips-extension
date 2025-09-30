@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
 import { ShortcutProps } from "../const";
+import { ViewProvider } from "./TabProvider";
 
 export class SidebarViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "Sidebar";
@@ -23,6 +24,18 @@ export class SidebarViewProvider implements vscode.WebviewViewProvider {
       webviewView.webview,
       this.context.extensionUri
     );
+
+    // メッセージリスナーを設定
+    webviewView.webview.onDidReceiveMessage((message) => {
+      switch (message.command) {
+        case "openShortcutTab":
+          const shortcut: ShortcutProps = message.value;
+          new ViewProvider(this.context, this.extensionUri).openTabView(shortcut);
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   private _getWebviewContent(webview: Webview, extensionUri: Uri) {
