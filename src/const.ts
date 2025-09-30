@@ -5,7 +5,7 @@ type ShortcutPlatformInfo = {
 };
 
 // ショートカット全体の型
-type Shortcut = {
+export type Shortcut = {
   name: string;
   description: string;
   win32: ShortcutPlatformInfo;

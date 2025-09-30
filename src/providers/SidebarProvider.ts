@@ -2,8 +2,9 @@ import { window, Uri, Webview, WebviewViewProvider } from "vscode";
 import * as vscode from "vscode";
 import { getUri } from "../utilities/getUri";
 import { getNonce } from "../utilities/getNonce";
-import { ShortcutProps } from "../const";
+import { ShortcutProps, Shortcut } from "../const";
 import { ViewProvider } from "./TabProvider";
+import * as os from "os";
 
 export class SidebarViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "Sidebar";
@@ -29,13 +30,25 @@ export class SidebarViewProvider implements vscode.WebviewViewProvider {
     webviewView.webview.onDidReceiveMessage((message) => {
       switch (message.command) {
         case "openShortcutTab":
-          const shortcut: ShortcutProps = message.value;
-          new ViewProvider(this.context, this.extensionUri).openTabView(shortcut);
+          const shortcut: Shortcut = message.value;
+          const convertedShortcut = this.convertShortcutForTab(shortcut);
+          new ViewProvider(this.context, this.extensionUri).openTabView(convertedShortcut);
           break;
         default:
           break;
       }
     });
+  }
+
+  private convertShortcutForTab(shortcut: Shortcut): ShortcutProps {
+    const platform = os.platform();
+    const platformShortcut = platform === "darwin" ? shortcut.darwin : shortcut.win32;
+    return {
+      name: shortcut.name,
+      description: shortcut.description,
+      command: platformShortcut?.command || "",
+      gif: platformShortcut?.gif || "",
+    };
   }
 
   private _getWebviewContent(webview: Webview, extensionUri: Uri) {
