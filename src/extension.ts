@@ -1,12 +1,13 @@
 import { ExtensionContext } from "vscode";
 import { ViewProvider } from "./providers/TabProvider";
+import { SidebarViewProvider } from "./providers/SidebarProvider";
 import { getRandomShortcut } from "./utilities/getShortcut";
 import * as vscode from "vscode";
 
 let intervalTimer: NodeJS.Timeout | undefined;
 
 export function activate(context: ExtensionContext) {
-  const provider = new ViewProvider(context, context.extensionUri);
+  const TabView = new ViewProvider(context, context.extensionUri);
 
   //ステータスバー
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
@@ -22,7 +23,7 @@ export function activate(context: ExtensionContext) {
     const message = `${shortcut.name}:${shortcut.command}`;
     vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
       if (selection === "動きを確認する") {
-        provider.openTabView(shortcut);
+        TabView.openTabView(shortcut);
       }
     });
   });
@@ -37,7 +38,7 @@ export function activate(context: ExtensionContext) {
     const message = `${shortcut.name}:${shortcut.command}`;
     vscode.window.showInformationMessage(message, "動きを確認する").then((selection) => {
       if (selection === "動きを確認する") {
-        provider.openTabView(shortcut);
+        TabView.openTabView(shortcut);
       }
     });
   }, intervalInMinutes * 60 * 1000);
@@ -49,6 +50,11 @@ export function activate(context: ExtensionContext) {
       }
     },
   });
+
+  //サイドバー
+  const SidebarView = new SidebarViewProvider(context, context.extensionUri);
+
+  context.subscriptions.push(vscode.window.registerWebviewViewProvider("sidebarView", SidebarView));
 }
 
 export function deactivate() {

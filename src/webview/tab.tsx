@@ -24,7 +24,7 @@ const Tab = () => {
     return () => window.removeEventListener("message", listener);
   }, []);
 
-  if (!data) return <p>読み込み中...</p>;
+  if (!data) return <>p読み込み中...</>;
 
   const toggleFavorite = () => {
     setIsFavorite((prev) => !prev);
