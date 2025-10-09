@@ -40,7 +40,7 @@ const Tab = () => {
             <p>
               {data.command.split("+").map((key, index, array) => (
                 <span key={index}>
-                  <kbd className="kbd-key">{key.trim()}</kbd>
+                  <kbd className="tab-kbd-key">{key.trim()}</kbd>
                   {index < array.length - 1 && <span> + </span>}
                 </span>
               ))}
