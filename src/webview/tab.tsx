@@ -46,11 +46,6 @@ const Tab = () => {
               ))}
             </p>
           </div>
-          <div>
-            <VSCodeButton className="vscode-button" onClick={toggleFavorite} appearance="secondary">
-              {isFavorite ? "★ 保存済み" : "☆ ショートカットを保存"}
-            </VSCodeButton>
-          </div>
         </div>
         <div className="gif-field">
           <img src={data.gif} alt="gif preview" className="gif-preview" />
