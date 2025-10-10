@@ -40,16 +40,11 @@ const Tab = () => {
             <p>
               {data.command.split("+").map((key, index, array) => (
                 <span key={index}>
-                  <kbd className="kbd-key">{key.trim()}</kbd>
+                  <kbd className="tab-kbd-key">{key.trim()}</kbd>
                   {index < array.length - 1 && <span> + </span>}
                 </span>
               ))}
             </p>
-          </div>
-          <div>
-            <VSCodeButton className="vscode-button" onClick={toggleFavorite} appearance="secondary">
-              {isFavorite ? "★ 保存済み" : "☆ ショートカットを保存"}
-            </VSCodeButton>
           </div>
         </div>
         <div className="gif-field">
