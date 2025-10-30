@@ -31,7 +31,7 @@ export const SHORT_CUT: Shortcut[] = [
     },
     darwin: {
       command: "Cmd+Shift+P",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      gif: "",
     },
   },
   {
@@ -44,7 +44,7 @@ export const SHORT_CUT: Shortcut[] = [
     },
     darwin: {
       command: "Cmd+P",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      gif: "",
     },
   },
   {
@@ -57,7 +57,7 @@ export const SHORT_CUT: Shortcut[] = [
     },
     darwin: {
       command: "Cmd+Shift+N",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      gif: "",
     },
   },
   {
@@ -70,7 +70,7 @@ export const SHORT_CUT: Shortcut[] = [
     },
     darwin: {
       command: "Cmd+Shift+W",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      gif: "",
     },
   },
   {
@@ -83,19 +83,33 @@ export const SHORT_CUT: Shortcut[] = [
     },
     darwin: {
       command: "Cmd+,",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      gif: "",
     },
   },
   {
-    name: "",
-    description: "",
+    name: "キーボードショートカットを開く",
+    description:
+      "VS Code のすべてのキーボードショートカットを一覧表示します。各ショートカットの検索やカスタマイズ、JSON での編集も可能です。",
     win32: {
-      command: "",
+      command: "Ctrl+K + Ctrl+S",
+      gif: "https://storage.googleapis.com/short-cut-tips-bucket/short-cut-keyboard-shortcuts-win.gif",
+    },
+    darwin: {
+      command: "Cmd+K + Cmd+S",
+      gif: "",
+    },
+  },
+  {
+    name: "行を切り取り",
+    description:
+      "テキストを選択していない状態で使うと、カーソルがある行全体を切り取ります。選択中の場合は、選択範囲を切り取ります。",
+    win32: {
+      command: "Ctrl+X",
       gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
     },
     darwin: {
-      command: "",
-      gif: "https://storage.googleapis.com/short-cut-tips-bucket/row-copy.gif",
+      command: "Cmd+X",
+      gif: "",
     },
   },
 ];
