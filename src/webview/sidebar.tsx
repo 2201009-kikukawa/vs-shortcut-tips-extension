@@ -9,84 +9,101 @@ const vscode = acquireVsCodeApi();
 const Tab = () => {
   const [os, setOs] = useState<"win32" | "darwin">("win32");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [history, setHistory] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"shortcuts" | "history">("shortcuts");
 
-  // マウント時に OS を判定
   useEffect(() => {
     const platform = navigator.platform.toLowerCase();
+    setOs(platform.includes("mac") ? "darwin" : "win32");
 
-    if (platform.includes("mac")) {
-      setOs("darwin");
-    } else if (platform.includes("win")) {
-      setOs("win32");
-    }
+    // 履歴をリクエスト
+    vscode.postMessage({ command: "requestHistory" });
+
+    // メッセージ受信イベント
+    const handleMessage = (event: any) => {
+      const { command, value } = event.data;
+      if (command === "loadHistory") {
+        setHistory(value);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   const handleCommandClick = (shortcut: any) => {
     vscode.postMessage({ command: "openShortcutTab", value: shortcut });
   };
 
-  // 検索クエリに基づいてショートカットをフィルタリング
-  const filteredShortcuts = useMemo(() => {
-    if (!searchQuery.trim()) {
-      return SHORT_CUT;
-    }
-
-    const query = searchQuery.toLowerCase();
-    return SHORT_CUT.filter((shortcut) => {
-      const name = shortcut.name.toLowerCase();
-      const description = shortcut.description.toLowerCase();
-      const win32Command = shortcut.win32.command.toLowerCase();
-      const darwinCommand = shortcut.darwin.command.toLowerCase();
-
-      return (
-        name.includes(query) ||
-        description.includes(query) ||
-        win32Command.includes(query) ||
-        darwinCommand.includes(query)
-      );
-    });
-  }, [searchQuery]);
-
-  const handleSearchChange = (event: any) => {
-    setSearchQuery(event.target.value);
+  const handleClearHistory = () => {
+    vscode.postMessage({ command: "clearHistory" });
+    setHistory([]);
   };
 
-  return (
-    <>
-      <div className="search-container">
-        <VSCodeTextField
-          placeholder="ショートカットを検索..."
-          value={searchQuery}
-          onInput={handleSearchChange}
-          className="search-input"
-        />
-      </div>
-      
-      {filteredShortcuts.length === 0 ? (
-        <div className="no-results">
-          <p>検索結果が見つかりませんでした</p>
-        </div>
-      ) : (
-        filteredShortcuts.map((shortcut, index) => {
-          const command = os === "win32" ? shortcut.win32.command : shortcut.darwin.command;
+  const filteredShortcuts = useMemo(() => {
+    if (!searchQuery.trim()) return SHORT_CUT;
+    const q = searchQuery.toLowerCase();
+    return SHORT_CUT.filter((s) =>
+      [s.name, s.description, s.win32.command, s.darwin.command].some((t) =>
+        t.toLowerCase().includes(q)
+      )
+    );
+  }, [searchQuery]);
 
-          return (
-            <div key={index} className="card" onClick={() => handleCommandClick(shortcut)}>
-              <h3>{shortcut.name}</h3>
-              <p>{shortcut.description}</p>
-              <p>
-                {command.split("+").map((key, i, array) => (
-                  <span key={i}>
-                    <kbd className="kbd-key">{key.trim()}</kbd>
-                    {i < array.length - 1 && <span> + </span>}
-                  </span>
-                ))}
-              </p>
+  return (
+    <div>
+      <div className="tab-header">
+        <button
+          className={`tab-header-btn ${activeTab === "shortcuts" ? "active" : ""}`}
+          onClick={() => setActiveTab("shortcuts")}>
+          一覧
+        </button>
+
+        <button
+          className={`tab-header-btn ${activeTab === "history" ? "active" : ""}`}
+          onClick={() => setActiveTab("history")}>
+          履歴
+        </button>
+      </div>
+
+      {activeTab === "shortcuts" && (
+        <div className="tab-content">
+          <div className="search-container">
+            <VSCodeTextField
+              placeholder="ショートカットを検索..."
+              value={searchQuery}
+              onInput={(e: any) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {filteredShortcuts.map((s, i) => (
+            <div key={i} className="card" onClick={() => handleCommandClick(s)}>
+              <h3>{s.name}</h3>
+              <p>{s.description}</p>
             </div>
-          );
-        })
+          ))}
+        </div>
       )}
-    </>
+
+      {activeTab === "history" && (
+        <div className="tab-content">
+          <VSCodeButton className="clear-history" onClick={handleClearHistory}>
+            履歴をクリア
+          </VSCodeButton>
+
+          {history.length === 0 ? (
+            <p>履歴はありません</p>
+          ) : (
+            history.map((s, i) => (
+              <div key={i} className="card" onClick={() => handleCommandClick(s)}>
+                <h3>{s.name}</h3>
+                <p>{s.description}</p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
