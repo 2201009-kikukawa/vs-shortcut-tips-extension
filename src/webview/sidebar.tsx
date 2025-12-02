@@ -53,17 +53,17 @@ const Tab = () => {
   return (
     <div>
       <div className="tab-header">
-        <button
+        <div
           className={`tab-header-btn ${activeTab === "shortcuts" ? "active" : ""}`}
           onClick={() => setActiveTab("shortcuts")}>
           一覧
-        </button>
+        </div>
 
-        <button
+        <div
           className={`tab-header-btn ${activeTab === "history" ? "active" : ""}`}
           onClick={() => setActiveTab("history")}>
           履歴
-        </button>
+        </div>
       </div>
 
       {activeTab === "shortcuts" && (
