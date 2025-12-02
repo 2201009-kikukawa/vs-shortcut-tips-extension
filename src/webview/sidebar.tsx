@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import { SHORT_CUT } from "../const";
-import { VSCodeButton, VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
+import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 
 declare const acquireVsCodeApi: any;
 const vscode = acquireVsCodeApi();
@@ -69,11 +69,16 @@ const Tab = () => {
       {activeTab === "shortcuts" && (
         <div className="tab-content">
           <div className="search-container">
-            <VSCodeTextField
-              placeholder="ショートカットを検索..."
-              value={searchQuery}
-              onInput={(e: any) => setSearchQuery(e.target.value)}
-            />
+            <div className="search-wrapper">
+              <input
+                id="shortcut-search"
+                className="search-input"
+                type="search"
+                placeholder="ショートカットを検索..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
 
           {filteredShortcuts.map((s, i) => (
@@ -87,7 +92,7 @@ const Tab = () => {
 
       {activeTab === "history" && (
         <div className="tab-content">
-          <VSCodeButton className="clear-history" onClick={handleClearHistory}>
+          <VSCodeButton appearance="primary" className="clear-history" onClick={handleClearHistory}>
             履歴をクリア
           </VSCodeButton>
 

@@ -26,8 +26,8 @@
       "activitybar": [
         {
           "id": "Sidebar",
-          "title": "Sample",
-          "icon": "media/sample-icon.svg"
+          "title": "Shortcut List",
+          "icon": "resources/webview_icon.svg"
         }
       ]
     },
