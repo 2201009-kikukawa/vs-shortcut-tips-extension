@@ -112,4 +112,16 @@ export const SHORT_CUT: Shortcut[] = [
       gif: "",
     },
   },
+  {
+    name: "",
+    description: "",
+    win32: {
+      command: "",
+      gif: "",
+    },
+    darwin: {
+      command: "",
+      gif: "",
+    },
+  },
 ];

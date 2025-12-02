@@ -1,3 +1,4 @@
+/* ===== 全体レイアウト ===== */
 .box {
   height: 400px;
 }
@@ -6,6 +7,18 @@
 .field {
   display: flex;
   justify-content: space-between;
+}
+
+.history-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== タブ内コンテンツ ===== */
+.tab-content {
+  width: 90%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 /* ===== キー表示 ===== */
@@ -74,7 +87,7 @@
   border-radius: 16px;
 }
 
-/* ===== カード ===== */
+/* ===== カード（履歴 & 一覧） ===== */
 .card {
   border: 1px solid var(--vscode-editorWidget-border);
   border-radius: 8px;
@@ -106,15 +119,41 @@
 /* ===== 検索バー ===== */
 .search-container {
   margin-bottom: 16px;
+  width: 100%;
+}
+
+.search-label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--vscode-descriptionForeground);
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--vscode-input-border);
+  border-radius: 6px;
+  background-color: var(--vscode-input-background);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.search-icon {
+  font-size: 13px;
+  color: var(--vscode-descriptionForeground);
 }
 
 .search-input {
   width: 100%;
-  background-color: var(--vscode-input-background);
+  background: transparent;
   color: var(--vscode-input-foreground);
-  border: 1px solid var(--vscode-input-border);
-  border-radius: 4px;
-  padding: 6px;
+  border: none;
+  outline: none;
+  font-size: 13px;
 }
 
 /* ===== 検索結果なし ===== */
@@ -127,4 +166,39 @@
 .no-results p {
   margin: 0;
   font-style: italic;
+}
+
+/* ===== タブ切り替え ===== */
+.tab-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 16px;
+  gap: 24px;
+}
+
+.tab-header-btn {
+  padding-bottom: 4px;
+  cursor: pointer;
+  color: var(--vscode-descriptionForeground);
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.tab-header-btn:hover {
+  color: var(--vscode-editor-foreground);
+}
+
+.tab-header-btn.active {
+  color: var(--vscode-editor-foreground);
+  border-bottom: 2px solid var(--vscode-editor-foreground);
+}
+
+/* ===== 履歴クリアボタン ===== */
+.clear-history {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
 }
