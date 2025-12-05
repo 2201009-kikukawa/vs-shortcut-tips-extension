@@ -210,7 +210,6 @@
 
 /* ===== 履歴クリアボタン ===== */
 .clear-history {
-  display: block;
   width: 100%;
   text-align: center;
   margin-bottom: 16px;
