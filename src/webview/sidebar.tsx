@@ -85,6 +85,14 @@ const Tab = () => {
             <div key={i} className="card" onClick={() => handleCommandClick(s)}>
               <h3>{s.name}</h3>
               <p>{s.description}</p>
+              <p className="shortcut-display">
+                {s[os].command.split("+").map((key, index, array) => (
+                  <span key={index}>
+                    <kbd className="tab-kbd-key">{key.trim()}</kbd>
+                    {index < array.length - 1 && <span> + </span>}
+                  </span>
+                ))}
+              </p>
             </div>
           ))}
         </div>
@@ -103,6 +111,14 @@ const Tab = () => {
               <div key={i} className="card" onClick={() => handleCommandClick(s)}>
                 <h3>{s.name}</h3>
                 <p>{s.description}</p>
+                <p className="shortcut-display">
+                  {s.command.split("+").map((key: string, index: number, array: string[]) => (
+                    <span key={index}>
+                      <kbd className="tab-kbd-key">{key.trim()}</kbd>
+                      {index < array.length - 1 && <span> + </span>}
+                    </span>
+                  ))}
+                </p>
               </div>
             ))
           )}

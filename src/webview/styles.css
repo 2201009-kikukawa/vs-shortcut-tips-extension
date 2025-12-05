@@ -119,6 +119,16 @@
   text-overflow: ellipsis;
 }
 
+.card .shortcut-display {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--vscode-editor-foreground);
+}
+
 /* ===== 検索バー ===== */
 .search-container {
   margin-bottom: 16px;
