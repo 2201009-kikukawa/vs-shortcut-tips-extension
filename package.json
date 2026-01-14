@@ -6,7 +6,7 @@
   "publisher": "VS-Modules",
   "repository": {
     "type": "git",
-    "url": "https://github.com/2201009-kikukawa/vs-shortcut-tips-extension"
+    "url": "https://github.com/kazuki0903/vs-shortcut-tips-extension"
   },
   "engines": {
     "vscode": "^1.93.1"

@@ -66,7 +66,7 @@ npm run compile  # リリース用バンドルを生成
 
 ## ライセンス / コントリビュート
 
-- **バグ報告・機能要望**: [GitHub Issues](https://github.com/2201009-kikukawa/vs-shortcut-tips-extension/issues) へお寄せください。
+- **バグ報告・機能要望**: [GitHub Issues](https://github.com/kazuki0903/vs-shortcut-tips-extension/issues) へお寄せください。
 - **コントリビュート**: 開発への参加を歓迎します！詳細は [CONTRIBUTING.md](./CONTRIBUTING.md) をご確認ください。
 - **プルリクエスト**: 送信前に `npm run compile` が通ること、および挙動に問題がないことを確認してください。
 
