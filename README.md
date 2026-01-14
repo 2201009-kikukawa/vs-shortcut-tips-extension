@@ -5,8 +5,6 @@
 ![ポップアップのデモをここに配置](media/popup-demo.gif)
 ![GIF デモの差し替え場所](media/tab-demo.gif)
 
-> 上記の `media/*.gif` は差し替え予定のプレースホルダーです。実際の動作を録画した後に同名ファイルで置き換えてください。
-
 ## 主な機能
 
 - **ステータスバーから即確認**: 左下に `ShortCutTips` ボタンが常駐し、クリックでランダムなショートカットを表示します。
@@ -71,6 +69,7 @@ npm run compile  # リリース用バンドルを生成
 - **バグ報告・機能要望**: [GitHub Issues](https://github.com/2201009-kikukawa/vs-shortcut-tips-extension/issues) へお寄せください。
 - **コントリビュート**: 開発への参加を歓迎します！詳細は [CONTRIBUTING.md](./CONTRIBUTING.md) をご確認ください。
 - **プルリクエスト**: 送信前に `npm run compile` が通ること、および挙動に問題がないことを確認してください。
+
 ---
 
 Shortcut Tips で日々の作業のリズムを崩さずにショートカットを定着させましょう。
