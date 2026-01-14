@@ -1,16 +1,19 @@
 {
-  "name": "sample-extension-04251226",
-  "displayName": "sample displayName",
-  "description": "sample description",
+  "name": "shortcut-tips-v1",
+  "displayName": "Shortcut Tips",
+  "description": "Shortcut Tipsは、よく使うショートカットキーをTipsとして表示するVSCode拡張機能です。作業効率を向上させるために役立ちます。",
   "version": "0.0.1",
   "publisher": "VS-Modules",
   "repository": {
     "type": "git",
-    "url": "https://github.com/2201009-kikukawa/Sample-extension"
+    "url": "https://github.com/2201009-kikukawa/vs-shortcut-tips-extension"
   },
   "engines": {
     "vscode": "^1.93.1"
   },
+  "categories": [
+    "Other"
+  ],
   "main": "./out/extension.js",
   "activationEvents": [
     "*"
@@ -27,7 +30,7 @@
         {
           "id": "Sidebar",
           "title": "Shortcut List",
-          "icon": "resources/webview_icon.svg"
+          "icon": "resources/lightbulb.svg"
         }
       ]
     },
